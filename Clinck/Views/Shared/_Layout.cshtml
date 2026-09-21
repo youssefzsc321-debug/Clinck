@@ -10,13 +10,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Clinck</title>
 
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%233e97ff' d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM224 160c0-17.7 14.3-32 32-32s32 14.3 32 32v64h64c17.7 0 32 14.3 32 32s-14.3 32-32 32H288v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V288H160c-17.7 0-32-14.3-32-32s14.3-32 32-32h64V160z'/></svg>" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <!-- Google Fonts (Inter) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.css" />
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <!-- SweetAlert2 Metronic style -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Custom Theme Style -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -25,35 +31,7 @@
 <body>
 
     <!-- Sidebar -->
-    <aside class="app-sidebar">
-        <div class="sidebar-brand">
-            <i class="fa-solid fa-notes-medical text-primary me-2"></i> Clinck
-        </div>
-        <div class="sidebar-menu">
-            <div class="menu-header">Main</div>
-            <ul class="p-0">
-                <li class="menu-item">
-                    <a class="menu-link active" asp-controller="Home" asp-action="Index">
-                        <i class="fa-solid fa-chart-line"></i> Dashboard
-                    </a>
-                </li>
-            </ul>
-
-            <div class="menu-header">Management</div>
-            <ul class="p-0">
-                <li class="menu-item">
-                    <a class="menu-link" asp-controller="Doctors" asp-action="Index">
-                        <i class="fa-solid fa-user-doctor"></i> Doctors
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" asp-controller="Departments" asp-action="Index">
-                        <i class="fa-solid fa-hospital-user"></i> Departments
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </aside>
+    <partial name="_Asides" />
 
     <!-- Wrapper -->
     <div class="app-wrapper">
@@ -113,8 +91,14 @@
     <!-- Core Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

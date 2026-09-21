@@ -1,0 +1,40 @@
+﻿@model Clinck.Application.ViewModels.Doctors.FormVm
+
+<form id="ModalForm"
+      asp-controller="Doctors"
+      asp-action="@(Model?.Id > 0 ? "Edit" : "Create")"
+      data-ajax="true"
+      data-ajax-method="post"
+      data-ajax-begin="OnModalBegin"
+      data-ajax-success="OnModalSuccess"
+      data-ajax-failure="showErrorMessage"
+      data-ajax-complete="OnModalComplete">
+
+    @if (Model?.Id > 0)
+    {
+        <input type="hidden" asp-for="Id" />
+    }
+
+    <div class="mb-5">
+        <div class="form-floating mb-4">
+            <input type="text" class="form-control" placeholder="First Name" asp-for="FirstName" />
+            <label asp-for="FirstName"></label>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input type="text" class="form-control" placeholder="Last Name" asp-for="LastName" />
+            <label asp-for="LastName"></label>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+      
+        <div class="form-floating mb-2">
+            <select class="form-select" asp-for="DepartmentId" asp-items="Model.Departments">
+                <option value="">-- Select Department --</option>
+            </select>
+            <label asp-for="DepartmentId"></label>
+            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+        </div>
+    </div>
+</form>

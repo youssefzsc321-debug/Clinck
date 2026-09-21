@@ -1,8 +1,12 @@
+using Clinck.Application.Common.Interfaces;
 using Clinck.Domain.Enities;
 using Clinck.Infrastructure.Data;
 using Clinck.Infrastructure.Seeds;
+using Clinck.Web.Services.Contract;
+using Clinck.Web.Services.Implementation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Clinck
 {
@@ -18,9 +22,14 @@ namespace Clinck
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-
+            builder.Services.AddAutoMapper(cfg => {
+                cfg.AddProfile<Clinck.Application.Common.Mapping.Doctors.MappingDoctors>();
+                
+            }, typeof(Program).Assembly); 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+            builder.Services.AddScoped<IDocotorService, DocotorService>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()

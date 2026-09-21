@@ -1,0 +1,79 @@
+﻿@model Clinck.Application.ViewModels.Doctors.GetDoctorsVm
+@{
+    var fullName = $"{Model.FirstName} {Model.LastName}";
+    var initial = !string.IsNullOrEmpty(Model.FirstName) ? Model.FirstName[0].ToString().ToUpper() : "D";
+}
+
+<tr>
+    <!-- Name & Avatar -->
+    <td class="ps-4">
+        <div class="d-flex align-items-center">
+            <div class="user-avatar me-3 fw-bold bg-light-primary text-primary">
+                @initial
+            </div>
+            <div class="d-flex flex-column">
+                <span class="text-dark fw-bold text-hover-primary fs-6">@fullName</span>
+            </div>
+        </div>
+    </td>
+
+    <!-- Department -->
+    <td>
+        <span class="badge bg-light text-dark fw-semibold px-3 py-2 border">
+            <i class="fa-solid fa-hospital-user text-primary me-1"></i> @Model.DepartmentName
+        </span>
+    </td>
+
+    <!-- Status Badge -->
+    <td>
+        @if (Model.IsDeleted)
+        {
+            <span class="badge bg-light-danger text-danger fw-bold px-3 py-2">
+                <i class="fa-solid fa-circle-xmark me-1 text-danger js-status" ></i> Inactive
+            </span>
+        }
+        else
+        {
+            <span class="badge bg-light-success text-success fw-bold px-3 py-2">
+                <i class="fa-solid fa-circle-check me-1 text-success js-status"></i> Active
+            </span>
+        }
+    </td>
+
+    <!-- Created On -->
+    <td class="text-muted fs-7" data-order="@Model.CreatedOn.ToString("yyyyMMddHHmmss")">
+        @Model.CreatedOn.ToString("MMM dd, yyyy")
+    </td>
+
+    <!-- Last Updated -->
+    <td class="text-muted fs-7" data-order="@(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("yyyyMMddHHmmss") : "0")">
+        @(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("MMM dd, yyyy") : "-")
+    </td>
+
+    <!-- Actions Dropdown -->
+    <td class="pe-4 text-end">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-light btn-active-light-primary px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                <li>
+                    <a href="javascript:;" class="dropdown-item py-2" id="model-add-edit-js"
+                       data-url="@Url.Action("Edit", "Doctors", new { id = Model.Id })"
+                       data-id="@Model.Id"
+                       data-title="Edit Doctor">
+                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i> Edit
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a href="javascript:;"
+                       class="dropdown-item py-2 text-danger js-toggle-status"
+                       data-url="@Url.Action("ToggleState", "Doctors", new { id = Model.Id })">
+                        <i class="fa-solid fa-arrows-rotate me-2"></i> Toggle Status
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>

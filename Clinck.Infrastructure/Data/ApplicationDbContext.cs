@@ -1,4 +1,5 @@
-﻿using Clinck.Domain.Enities;
+﻿using Clinck.Application.Common.Interfaces;
+using Clinck.Domain.Enities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Clinck.Infrastructure.Data
 {
-    public class ApplicationDbContext: IdentityDbContext<AppUser>
+    public class ApplicationDbContext: IdentityDbContext<AppUser>, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)

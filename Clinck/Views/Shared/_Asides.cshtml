@@ -1,0 +1,30 @@
+﻿<aside class="app-sidebar">
+    <div class="sidebar-brand text-center px-3 py-4">
+        <img src="~/Images/ChatGPT Image Sep 21, 2026, 06_09_35 PM.png" alt="Clinic Logo" class="img-fluid w-100" style="max-height: 80px; object-fit: contain;" />
+    </div>
+
+    <div class="sidebar-menu">
+        <div class="menu-header">Main</div>
+        <ul class="p-0">
+            <li class="menu-item">
+                <a class="menu-link active" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-header">Management</div>
+        <ul class="p-0">
+            <li class="menu-item">
+                <a class="menu-link" asp-controller="Doctors" asp-action="Index">
+                    <i class="fa-solid fa-user-doctor"></i> Doctors
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" asp-controller="Departments" asp-action="Index">
+                    <i class="fa-solid fa-hospital-user"></i> Departments
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>

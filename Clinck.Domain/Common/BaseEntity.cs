@@ -14,8 +14,8 @@ namespace Clinck.Domain.Common
 
         public DateTime CreatedOn { get; set; }=DateTime.Now;
         public string CreatedById { get; set; }
-        public DateTime LastUpdatedOn { get; set; }
-        public string LastUpdatedById { get; set; }
+        public DateTime? LastUpdatedOn { get; set; }
+        public string? LastUpdatedById { get; set; }
 
         public AppUser CreatedBy { get; set; }
         public AppUser LastUpdatedBy { get; set; }
