@@ -1,0 +1,29 @@
+┌── Add User / Register
+                                       ├── Update User
+                  ┌── User Management ─┼── Delete / Disable User
+                  │   (Identity)       └── Manage Roles & Permissions
+                  │
+                  ├── Departments ─────┬── Add Department
+                  │                    └── Update Department
+                  │
+                  │                    ┌── Add Doctor
+                  ├── Doctors ─────────┼── Update Doctor Profile
+                  │                    └── Toggle Doctor Status (Active/Inactive)
+                  │
+  🏥 Clinic System ─┤
+ Clinic Management │                    ┌── Register Patient
+                   ├── Patients ────────┼── Update Patient Info
+                   │                    ├── Patient Profile View
+                   │                    └── Patient Medical History
+                   │
+                   │                    ┌── Book Appointment
+                   │                    ├── Send Confirmation Notification
+                   ├── Appointments ────┼── Reschedule / Update Appointment
+                   │                    ├── Cancel Appointment
+                   │                    └── Update Status (Pending / Confirmed / Completed)
+                   │
+                   │                    ┌── Add Diagnosis & Prescription
+                   ├── Medical Records ─┼── Update Medical Record
+                   │                    └── Print / Export Prescription PDF
+                   │
+                   └── Search & Filter ─── Global Search (By Patient Phone, Doctor, Date)

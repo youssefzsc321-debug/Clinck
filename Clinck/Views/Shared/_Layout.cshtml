@@ -1,0 +1,120 @@
+﻿@using Clinck.Domain.Enities
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Clinck</title>
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Custom Theme Style -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+        <div class="sidebar-brand">
+            <i class="fa-solid fa-notes-medical text-primary me-2"></i> Clinck
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-header">Main</div>
+            <ul class="p-0">
+                <li class="menu-item">
+                    <a class="menu-link active" asp-controller="Home" asp-action="Index">
+                        <i class="fa-solid fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+            </ul>
+
+            <div class="menu-header">Management</div>
+            <ul class="p-0">
+                <li class="menu-item">
+                    <a class="menu-link" asp-controller="Doctors" asp-action="Index">
+                        <i class="fa-solid fa-user-doctor"></i> Doctors
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" asp-controller="Departments" asp-action="Index">
+                        <i class="fa-solid fa-hospital-user"></i> Departments
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Wrapper -->
+    <div class="app-wrapper">
+        <!-- Topbar / Header -->
+        <header class="app-header">
+            <div>
+                <h5 class="fw-bold mb-0">@ViewData["Title"]</h5>
+            </div>
+
+            <!-- User Menu -->
+            <div class="d-flex align-items-center gap-3">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var user = await UserManager.GetUserAsync(User);
+                    var fullName = user?.FullName ?? User.Identity?.Name;
+                    var firstChar = !string.IsNullOrEmpty(fullName) ? fullName[0].ToString().ToUpper() : "U";
+
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-avatar me-2">@firstChar</div>
+                            <span class="fw-semibold fs-6 me-2">@fullName</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item py-2" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="fa-solid fa-user me-2 text-muted"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="dropdown-item py-2 text-danger"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary btn-sm fw-bold me-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    <a class="btn btn-primary btn-sm fw-bold" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                }
+            </div>
+        </header>
+
+        <!-- Main Body Content -->
+        <main class="app-content">
+            <div class="container-fluid p-0">
+                @RenderBody()
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer d-flex justify-content-between align-items-center">
+            <div>
+                &copy; @DateTime.Now.Year - <span class="fw-bold text-dark">Clinck</span>. All Rights Reserved.
+            </div>
+        </footer>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
