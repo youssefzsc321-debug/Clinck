@@ -1,0 +1,65 @@
+﻿@model Clinck.Application.ViewModels.Departments.GetDepts
+<tr>
+    <!-- Name -->
+    <td class="ps-4">
+        <span class="text-dark fw-bold text-hover-primary fs-6">@Model.Name</span>
+    </td>
+
+    <!-- Number of Doctors -->
+    <td>
+        <span class="badge badge-light-primary text-primary fw-semibold px-3 py-2">
+            <i class="fa-solid fa-user-doctor me-1"></i> @Model.NumberOfDoctors Doctors
+        </span>
+    </td>
+
+    <td>
+        @if (Model.IsDeleted)
+        {
+            <span class="badge badge-light-danger text-danger fw-bold px-3 py-2 js-status-badge">
+                <i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Inactive
+            </span>
+        }
+        else
+        {
+            <span class="badge badge-light-success text-success fw-bold px-3 py-2 js-status-badge">
+                <i class="fa-solid fa-circle-check me-1 text-success"></i> Active
+            </span>
+        }
+    </td>
+
+    <!-- Created On -->
+    <td class="text-muted fs-7" data-order="@Model.CreatedOn.ToString("yyyyMMddHHmmss")">
+        @Model.CreatedOn.ToString("MMM dd, yyyy")
+    </td>
+
+    <td class="text-muted fs-7 js-updated-on" data-order="@(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("yyyyMMddHHmmss") : "0")">
+        @(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("MMM dd, yyyy") : "-")
+    </td>
+
+    <!-- Actions Dropdown -->
+    <td class="pe-4 text-end">
+        <div class="dropdown">
+            <button class="btn btn-sm btn-light btn-active-light-primary px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                <li>
+                    <a href="javascript:;" class="dropdown-item py-2" id="model-add-edit-js"
+                       data-url="@Url.Action("Edit", "Department", new { id = Model.Id })"
+                       data-id="@Model.Id"
+                       data-title="Edit Department">
+                        <i class="fa-solid fa-pen-to-square me-2 text-warning"></i> Edit
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a href="javascript:;"
+                       class="dropdown-item py-2 text-danger js-toggle-status"
+                       data-url="@Url.Action("ToggleState", "Department", new { id = Model.Id })">
+                        <i class="fa-solid fa-arrows-rotate me-2"></i> Toggle Status
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </td>
+</tr>

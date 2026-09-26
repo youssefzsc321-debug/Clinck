@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Clinck.Application.ViewModels.Departments.GetDepts>
+
+@{
+    ViewData["Title"] = "Departments Directory";
+}
+
+<!-- Page Header & Action Toolbar -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-1">Departments Directory</h3>
+        <p class="text-muted fs-7 mb-0">Manage hospital departments, doctor counts, and active statuses.</p>
+    </div>
+    <div>
+        <a href="javascript:;"
+           class="btn btn-primary fw-semibold px-4" id="model-add-edit-js"
+           data-title="Add Department"
+           data-url="@Url.Action("Create", "Department")">
+            <i class="fa-solid fa-plus me-2"></i> Add New Department
+        </a>
+    </div>
+</div>
+
+<!-- Main Table Card -->
+<div class="card card-metronic shadow-sm">
+    <div class="card-body p-4">
+        <div class="table-responsive">
+            <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 w-100" id="kt_table">
+                <!-- Table Head -->
+                <thead>
+                    <tr class="fw-bold text-muted bg-light border-bottom-0">
+                        <th class="ps-4 min-w-200px rounded-start">Department Name</th>
+                        <th class="min-w-150px">Number of Doctors</th>
+                        <th class="min-w-120px">Status</th>
+                        <th class="min-w-150px">Created On</th>
+                        <th class="min-w-150px">Last Updated</th>
+                        <th class="pe-4 text-end min-w-100px rounded-end no-sort">Actions</th>
+                    </tr>
+                </thead>
+
+                <!-- Table Body -->
+                <tbody>
+                    @foreach (var dept in Model)
+                    {
+                        <partial name="_DeptRow" model="@dept"/>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<partial name="_Modal" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+  
+}

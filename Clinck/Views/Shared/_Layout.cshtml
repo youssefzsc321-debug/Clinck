@@ -11,14 +11,19 @@
     <title>@ViewData["Title"] - Clinck</title>
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%233e97ff' d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM224 160c0-17.7 14.3-32 32-32s32 14.3 32 32v64h64c17.7 0 32 14.3 32 32s-14.3 32-32 32H288v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V288H160c-17.7 0-32-14.3-32-32s14.3-32 32-32h64V160z'/></svg>" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link href="~/apexcharts/apexcharts.min.css" rel="stylesheet" />
     <!-- Google Fonts (Inter) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- Bootstrap 5 CSS -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.css" />
+    <link href="~/apexcharts/apexcharts-legend.min.css" rel="stylesheet" />
+    <!-- Metronic Global Stylesheets Bundle -->
+    <link rel="stylesheet" href="~/assets/css/plugins.bundle.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/style.bundle.css" asp-append-version="true" />
+
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <!-- SweetAlert2 Metronic style -->
@@ -28,60 +33,62 @@
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
+<body id="kt_body" class="app-default">
 
     <!-- Sidebar -->
     <partial name="_Asides" />
 
     <!-- Wrapper -->
-    <div class="app-wrapper">
+    <div class="app-wrapper flex-column flex-row-fluid">
         <!-- Topbar / Header -->
         <header class="app-header">
-            <div>
-                <h5 class="fw-bold mb-0">@ViewData["Title"]</h5>
-            </div>
+            <div class="container-fluid d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="fw-bold mb-0">@ViewData["Title"]</h5>
+                </div>
 
-            <!-- User Menu -->
-            <div class="d-flex align-items-center gap-3">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    var user = await UserManager.GetUserAsync(User);
-                    var fullName = user?.FullName ?? User.Identity?.Name;
-                    var firstChar = !string.IsNullOrEmpty(fullName) ? fullName[0].ToString().ToUpper() : "U";
+                <!-- User Menu -->
+                <div class="d-flex align-items-center gap-3">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        var user = await UserManager.GetUserAsync(User);
+                        var fullName = user?.FullName ?? User.Identity?.Name;
+                        var firstChar = !string.IsNullOrEmpty(fullName) ? fullName[0].ToString().ToUpper() : "U";
 
-                    <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="user-avatar me-2">@firstChar</div>
-                            <span class="fw-semibold fs-6 me-2">@fullName</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" aria-labelledby="userMenu">
-                            <li><a class="dropdown-item py-2" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="fa-solid fa-user me-2 text-muted"></i> Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                    <button type="submit" class="dropdown-item py-2 text-danger"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                }
-                else
-                {
-                    <a class="btn btn-outline-primary btn-sm fw-bold me-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                    <a class="btn btn-primary btn-sm fw-bold" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                }
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="user-avatar me-2">@firstChar</div>
+                                <span class="fw-semibold fs-6 me-2">@fullName</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item py-2" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="fa-solid fa-user me-2 text-muted"></i> Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button type="submit" class="dropdown-item py-2 text-danger"><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-primary btn-sm fw-bold me-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        <a class="btn btn-primary btn-sm fw-bold" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    }
+                </div>
             </div>
         </header>
 
         <!-- Main Body Content -->
-        <main class="app-content">
-            <div class="container-fluid p-0">
+        <main class="app-content flex-column-fluid">
+            <div class="container-fluid py-4">
                 @RenderBody()
             </div>
         </main>
 
         <!-- Footer -->
-        <footer class="app-footer d-flex justify-content-between align-items-center">
+        <footer class="app-footer d-flex justify-content-between align-items-center py-3 px-4 bg-white border-top">
             <div>
                 &copy; @DateTime.Now.Year - <span class="fw-bold text-dark">Clinck</span>. All Rights Reserved.
             </div>
@@ -90,15 +97,20 @@
 
     <!-- Core Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Metronic Global Javascript Bundle -->
+    <script src="~/assets/js/plugins.bundle.js" asp-append-version="true"></script>
+    <script src="~/assets/js/scripts.bundle.js" asp-append-version="true"></script>
+
+    <!-- DataTables JS & Bootstrap 5 Integration -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/apexcharts/apexcharts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

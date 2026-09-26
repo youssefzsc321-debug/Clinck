@@ -5,6 +5,10 @@
     {
       "library": "datatables.net-bs5@1.13.6",
       "destination": "wwwroot/lib/datatables.net-bs5/"
+    },
+    {
+      "library": "apexcharts@7.5.1",
+      "destination": "wwwroot/apexcharts/"
     }
   ]
 }

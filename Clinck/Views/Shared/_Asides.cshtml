@@ -1,4 +1,6 @@
-﻿<aside class="app-sidebar">
+﻿@using Clinck.Domain.Consts
+
+<aside class="app-sidebar">
     <div class="sidebar-brand text-center px-3 py-4">
         <img src="~/Images/ChatGPT Image Sep 21, 2026, 06_09_35 PM.png" alt="Clinic Logo" class="img-fluid w-100" style="max-height: 80px; object-fit: contain;" />
     </div>
@@ -7,7 +9,7 @@
         <div class="menu-header">Main</div>
         <ul class="p-0">
             <li class="menu-item">
-                <a class="menu-link active" asp-controller="Home" asp-action="Index">
+                <a class="menu-link" asp-controller="Dashboard" asp-action="Index" active-when="Dashboard">
                     <i class="fa-solid fa-chart-line"></i> Dashboard
                 </a>
             </li>
@@ -15,16 +17,45 @@
 
         <div class="menu-header">Management</div>
         <ul class="p-0">
-            <li class="menu-item">
-                <a class="menu-link" asp-controller="Doctors" asp-action="Index">
-                    <i class="fa-solid fa-user-doctor"></i> Doctors
-                </a>
-            </li>
-            <li class="menu-item">
-                <a class="menu-link" asp-controller="Departments" asp-action="Index">
-                    <i class="fa-solid fa-hospital-user"></i> Departments
-                </a>
-            </li>
+            <!-- Users Section -->
+            @if (User.IsInRole(AppRoles.Admin) || User.IsInRole(AppRoles.Doctor))
+            {
+                <li class="menu-item">
+                    <a class="menu-link" asp-controller="User" asp-action="Index" active-when="User">
+                        <i class="fa-solid fa-users"></i> Users
+                    </a>
+                </li>
+            }
+
+            <!-- Doctors Section -->
+            @if (User.IsInRole(AppRoles.Admin) || User.IsInRole(AppRoles.Receptionist))
+            {
+                <li class="menu-item">
+                    <a class="menu-link" asp-controller="Doctors" asp-action="Index" active-when="Doctors">
+                        <i class="fa-solid fa-user-doctor"></i> Doctors
+                    </a>
+                </li>
+            }
+
+            <!-- Departments Section -->
+            @if (User.IsInRole(AppRoles.Admin) || User.IsInRole(AppRoles.Receptionist))
+            {
+                <li class="menu-item">
+                    <a class="menu-link" asp-controller="Department" asp-action="Index" active-when="Department">
+                        <i class="fa-solid fa-hospital-user"></i> Departments
+                    </a>
+                </li>
+            }
+
+            <!-- Patients Section -->
+            @if (User.IsInRole(AppRoles.Admin) || User.IsInRole(AppRoles.Doctor) || User.IsInRole(AppRoles.Receptionist))
+            {
+                <li class="menu-item">
+                    <a class="menu-link" asp-controller="Patient" asp-action="Index" active-when="Patient">
+                        <i class="fa-solid fa-user-injured"></i> Patients
+                    </a>
+                </li>
+            }
         </ul>
     </div>
 </aside>

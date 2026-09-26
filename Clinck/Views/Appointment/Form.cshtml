@@ -1,0 +1,97 @@
+﻿@model Clinck.Application.ViewModels.Appointment.FormVm
+
+@{
+    ViewData["Title"] = "Add New Appointment";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title fw-bold">Add New Appointment</h3>
+    </div>
+
+    <form id="AppointmentForm" asp-controller="Appointment" asp-action="Create" method="post">
+        <div class="card-body">
+            @if (Model?.Id > 0)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+
+            <input type="hidden" asp-for="PatientId" />
+
+            <div class="mb-5">
+                <div class="mb-4">
+                    <label asp-for="SelectedDepartment" class="form-label fw-bold">Department</label>
+                    <select asp-for="SelectedDepartment" asp-items="Model.Departments" class="form-select" data-control="select2" data-placeholder="Select a department" id="DepartmentSelect">
+                        <option></option>
+                    </select>
+                    <span asp-validation-for="SelectedDepartment" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="SelectedDoctor" class="form-label fw-bold">Doctor</label>
+                    <select asp-for="SelectedDoctor" asp-items="Model.Doctors" class="form-select" data-control="select2" data-placeholder="Select a doctor" id="DoctorSelect">
+                        <option></option>
+                    </select>
+                    <span asp-validation-for="SelectedDoctor" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="AppointmentDate" class="form-label fw-bold">Appointment Date & Time</label>
+                    <input type="text" asp-for="AppointmentDate" class="form-control" placeholder="Select date & time" id="kt_datepicker" />
+                    <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end py-6 px-9">
+            <a asp-controller="Patient" asp-action="Details" asp-route-id="@Model.PatientId" class="btn btn-light btn-active-light-primary me-2">Cancel</a>
+            <button type="submit" class="btn btn-primary" id="saveModalBtn">
+                <span class="indicator-label">Save Changes</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-control="select2"]').select2();
+
+            $("#kt_datepicker").flatpickr({
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today"
+            });
+
+            $('#DepartmentSelect').on('change', function () {
+                var departmentId = $(this).val();
+                var $doctorSelect = $('#DoctorSelect');
+
+                $doctorSelect.empty().trigger('change');
+
+                $doctorSelect.append(new Option('', '', true, true));
+
+                if (!departmentId) {
+                    return;
+                }
+
+                $.ajax({
+                    url: '/Appointment/GetDoctorsByDepartment',
+                    type: 'GET',
+                    data: { departmentId: departmentId },
+                    success: function (doctors) {
+                        $.each(doctors, function (index, doctor) {
+                            var option = new Option(doctor.text, doctor.value);
+                            $doctorSelect.append(option);
+                        });
+
+                        $doctorSelect.trigger('change');
+                    },
+                    error: function () {
+                        console.error("Failed to load doctors.");
+                    }
+                });
+            });
+        });
+    </script>
+}

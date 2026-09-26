@@ -12,6 +12,9 @@ namespace Clinck.Application.Common.Interfaces
     {
         DbSet<Department> Departments { get; }
         DbSet<Doctor> Doctors { get; }
+        DbSet<Appointment> Appointments { get; }
+        DbSet<Patient> Patients { get; }
+     
 
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

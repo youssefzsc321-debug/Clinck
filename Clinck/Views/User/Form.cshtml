@@ -1,0 +1,81 @@
+﻿@model Clinck.Application.ViewModels.UserVms.UserForm
+
+@{
+    bool isEdit = !string.IsNullOrEmpty(Model.Id);
+    ViewData["Title"] = isEdit ? "Edit User" : "Add New User";
+}
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title">@(isEdit ? "Edit User" : "Add New User")</h3>
+    </div>
+    <div class="card-body">
+        <form asp-controller="User" asp-action="@(isEdit ? "Edit" : "Create")" method="post" id="UserForm" novalidate="novalidate">
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <!-- Full Name -->
+            <div class="fv-row mb-7">
+                <label asp-for="FullName" class="required fw-semibold fs-6 mb-2"></label>
+                <input asp-for="FullName" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Enter full name" />
+                <span asp-validation-for="FullName" class="text-danger mt-1 d-block fs-7"></span>
+            </div>
+
+            <!-- User Name -->
+            <div class="fv-row mb-7">
+                <label asp-for="UserName" class="required fw-semibold fs-6 mb-2"></label>
+                <input asp-for="UserName" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Enter username" />
+                <span asp-validation-for="UserName" class="text-danger mt-1 d-block fs-7"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="fv-row mb-7">
+                <label asp-for="Email" class="required fw-semibold fs-6 mb-2"></label>
+                <input asp-for="Email" type="email" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Enter email address" />
+                <span asp-validation-for="Email" class="text-danger mt-1 d-block fs-7"></span>
+            </div>
+
+            @if (!isEdit)
+            {
+                <div class="fv-row mb-7">
+                    <label asp-for="Password" class="required fw-semibold fs-6 mb-2"></label>
+                    <input asp-for="Password" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Enter password" />
+                    <span asp-validation-for="Password" class="text-danger mt-1 d-block fs-7"></span>
+                </div>
+
+                <div class="fv-row mb-7">
+                    <label asp-for="ConfirmPassword" class="required fw-semibold fs-6 mb-2"></label>
+                    <input asp-for="ConfirmPassword" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Confirm password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger mt-1 d-block fs-7"></span>
+                </div>
+            }
+
+            <!-- Roles Selection -->
+            <div class="fv-row mb-7">
+                <label class="fw-semibold fs-6 mb-2">User Roles</label>
+                <select asp-for="SelectedRoles" asp-items="Model.Roles" class="form-select form-select-solid" data-control="select2" data-placeholder="Select roles" multiple="multiple">
+                </select>
+                <span asp-validation-for="SelectedRoles" class="text-danger mt-1 d-block fs-7"></span>
+            </div>
+
+            <!-- Actions Footer -->
+            <div class="text-center pt-15">
+                <a asp-action="Index" class="btn btn-light me-3">Cancel</a>
+                <button type="submit" id="submit_btn" class="btn btn-primary">
+                    <span class="indicator-label">@(isEdit ? "Save Changes" : "Submit")</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        document.getElementById("UserForm").addEventListener("submit", function (e) {
+            console.log("Form is submitting successfully...");
+        });
+    </script>
+}

@@ -1,0 +1,62 @@
+﻿@model Clinck.Application.ViewModels.PatientVms.DrawPatientVm
+
+@if (Model == null)
+{
+    <!--begin::Alert / Not Found Card-->
+    <div class="card card-flush shadow-sm p-5 mt-5 border border-dashed border-gray-300 bg-light-warning">
+        <div class="card-body d-flex align-items-center justify-content-between p-0">
+            <div class="d-flex align-items-center">
+                <div class="symbol symbol-50px symbol-circle bg-warning text-white me-4 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-exclamation-triangle fs-2"></i>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="text-dark fw-bold fs-5 mb-1">Patient Not Found</span>
+                    <span class="text-muted fw-semibold fs-7">No patient record matches your search criteria. Please check the data or add a new patient.</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <a asp-controller="Patient" asp-action="Create" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus-square fs-4 me-1"></i> Add Now
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--end::Alert / Not Found Card-->
+}
+else
+{
+    <!--begin::Patient Result Card-->
+    <div class="card card-flush shadow-sm p-6 mt-5">
+        <div class="card-body d-flex align-items-center justify-content-between p-0">
+            <div class="d-flex align-items-center">
+                <!-- Avatar Container with Fixed Dimensions -->
+                <div class="me-4 flex-shrink-0">
+                    @if (!string.IsNullOrEmpty(Model.ImageThumnail))
+                    {
+                        <img src="@Model.ImageThumnail" alt="@Model.Name" class="rounded-circle border border-2 border-gray-200" style="width: 70px; height: 70px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center justify-content-center bg-light-primary text-primary fw-bold rounded-circle fs-3 border border-2 border-primary-subtle" style="width: 70px; height: 70px;">
+                            @(!string.IsNullOrEmpty(Model.Name) ? Model.Name[0].ToString().ToUpper() : "P")
+                        </div>
+                    }
+                </div>
+
+                <!-- Patient Info -->
+                <div class="d-flex flex-column">
+                    <span class="text-dark fw-bold fs-3 mb-1">@Model.Name</span>
+                    <span class="text-muted fw-semibold fs-7"><i class="bi bi-shield-check text-success me-1"></i> Patient Profile Record</span>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="d-flex align-items-center">
+                <a asp-action="Details" asp-controller="Patient" asp-route-id="@Model.Id"  class="btn btn-sm btn-light-primary px-4 py-2">
+                    <i class="bi bi-eye fs-5 me-1"></i> View Profile
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--end::Patient Result Card-->
+}

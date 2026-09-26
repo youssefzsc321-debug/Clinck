@@ -32,5 +32,9 @@ namespace Clinck.Infrastructure.Data
         }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Department> Departments { get; set; }
+
+        public DbSet<Appointment> Appointments { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
     }
 }
