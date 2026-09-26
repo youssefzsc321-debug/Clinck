@@ -2,13 +2,9 @@
 
 <form id="ModalForm"
       asp-controller="Doctors"
-      asp-action="@(Model?.Id > 0 ? "Edit" : "Create")"
-      data-ajax="true"
-      data-ajax-method="post"
-      data-ajax-begin="OnModalBegin"
-      data-ajax-success="OnModalSuccess"
-      data-ajax-failure="showErrorMessage"
-      data-ajax-complete="OnModalComplete">
+      asp-action="@(Model?.Id > 0 ? "Edit" : "Create")">
+
+    @Html.AntiForgeryToken()
 
     @if (Model?.Id > 0)
     {
@@ -28,7 +24,6 @@
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
 
-      
         <div class="form-floating mb-2">
             <select class="form-select" asp-for="DepartmentId" asp-items="Model.Departments">
                 <option value="">-- Select Department --</option>

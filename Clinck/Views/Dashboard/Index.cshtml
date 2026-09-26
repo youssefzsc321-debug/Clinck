@@ -1,0 +1,100 @@
+﻿@model Clinck.Application.ViewModels.Dashboard.ClinicDashboardVM
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid px-4">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    </div>
+
+    <div class="row g-5 mb-5">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm p-4">
+                <div class="text-muted fw-bold fs-7 text-uppercase mb-2">Total Patients</div>
+                <div class="fs-2 fw-bolder text-dark">@Model.NumberOfPatients</div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm p-4">
+                <div class="text-muted fw-bold fs-7 text-uppercase mb-2">Appointments Today</div>
+                <div class="fs-2 fw-bolder text-success">@Model.NumberOfAppointmentsToday</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-5">
+        <!-- جدول الحجوزات الأخيرة -->
+        <div class="col-xl-6 col-lg-12 mb-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white pt-5 pb-3">
+                    <h5 class="fw-bold text-dark m-0">Recent Appointments</h5>
+                    <span class="text-muted fs-7">Latest registered bookings</span>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <table class="table align-middle gs-0 gy-4">
+                            <thead>
+                                <tr class="fw-bold text-muted fs-7 bg-light">
+                                    <th class="ps-4">Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th class="pe-4 text-end">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.LastAddedAppointments)
+                                {
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-dark">@item.PatientName</td>
+                                        <td class="text-muted">@item.DoctorName</td>
+                                        <td><span class="badge bg-light-primary text-primary">@item.DepartmentName</span></td>
+                                        <td><span class="badge bg-light-success text-success">@item.Status</span></td>
+                                        <td class="pe-4 text-end text-muted fs-7">@item.AppointmentDate</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- جدول الأطباء المميزين -->
+        <div class="col-xl-6 col-lg-12 mb-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white pt-5 pb-3">
+                    <h5 class="fw-bold text-dark m-0">Top Doctors</h5>
+                    <span class="text-muted fs-7">Most active doctors by appointments</span>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <table class="table align-middle gs-0 gy-4">
+                            <thead>
+                                <tr class="fw-bold text-muted fs-7 bg-light">
+                                    <th class="ps-4">Doctor Name</th>
+                                    <th>Specialty</th>
+                                    <th class="pe-4 text-end">Appointments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var doc in Model.TopDoctors)
+                                {
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-dark">@doc.FullName</td>
+                                        <td><span class="badge bg-light-info text-info">@doc.Specialty</span></td>
+                                        <td class="pe-4 text-end fw-bold text-dark">@doc.TotalAppointments</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

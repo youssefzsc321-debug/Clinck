@@ -1,8 +1,10 @@
 ﻿using AspNetCoreGeneratedDocument;
 using AutoMapper;
 using Clinck.Application.ViewModels.Doctors;
+using Clinck.Domain.Consts;
 using Clinck.Domain.Enities;
 using Clinck.Web.Services.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -13,6 +15,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Clinck.Web.Controllers
 {
+    [Authorize(Roles =AppRoles.Admin)]
     public class DoctorsController : Controller
     {
         private readonly IDocotorService _service;

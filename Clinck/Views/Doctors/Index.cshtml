@@ -24,7 +24,7 @@
 <div class="card card-metronic shadow-sm">
     <div class="card-body p-4">
         <div class="table-responsive">
-            <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 w-100" id="kt_doctors_table">
+            <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 w-100" id="kt_table">
                 <!-- Table Head -->
                 <thead>
                     <tr class="fw-bold text-muted bg-light border-bottom-0">
@@ -55,32 +55,5 @@
 <partial name="_Modal" />
 @section Scripts {
    <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function () {
-            $('#kt_doctors_table').DataTable({
-                "pageLength": 10,
-                "lengthMenu": [5, 10, 25, 50],
-                "order": [[3, "desc"]],
-                "columnDefs": [
-                    { "orderable": false, "targets": "no-sort" }
-                ],
-                "language": {
-                    "search": "_INPUT_",
-                    "searchPlaceholder": "Search Doctors...",
-                    "lengthMenu": "Show _MENU_",
-                    "info": "Showing _START_ to _END_ of _TOTAL_ doctors",
-                    "paginate": {
-                        "first": "First",
-                        "last": "Last",
-                        "next": "<i class='fa-solid fa-chevron-right fs-7'></i>",
-                        "previous": "<i class='fa-solid fa-chevron-left fs-7'></i>"
-                    }
-                },
-                "dom": "<'row mb-3 align-items-center'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6 d-flex justify-content-end'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row mt-3 align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>"
-            });
-        }); 
-
-    </script>
+    
 }

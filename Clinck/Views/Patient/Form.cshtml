@@ -1,0 +1,237 @@
+﻿@model Clinck.Application.ViewModels.PatientVms.FormVm
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Add New Patient" : "Edit Patient";
+    var hasImage = !string.IsNullOrEmpty(Model.ImageThumnail);
+}
+
+<div class="card card-flush shadow-sm py-4">
+    <!--begin::Card Header-->
+    <div class="card-header border-0 pt-5">
+        <div class="card-title m-0">
+            <div class="symbol symbol-45px w-50px bg-light-primary me-3 d-flex align-items-center justify-content-center rounded">
+                <i class="bi bi-person-plus-fill fs-2 text-primary"></i>
+            </div>
+            <div class="d-flex flex-column">
+                <h3 class="fw-bold text-dark m-0">@(Model.Id == 0 ? "Add New Patient" : "Edit Patient Profile")</h3>
+                <span class="text-muted fs-7 fw-semibold">Fill in the patient's personal and medical details below</span>
+            </div>
+        </div>
+    </div>
+    <!--end::Card Header-->
+    <!--begin::Card Body-->
+    <div class="card-body pt-3">
+        <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post" enctype="multipart/form-data" id="PatientForm">
+
+            <!-- Hidden Field for ID -->
+            @if (Model.Id != 0)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+
+            <!-- Section 1: Patient Avatar & Identity -->
+            <div class="row mb-8 align-items-center">
+                <label class="col-lg-3 col-form-label fw-bold fs-6 required">Patient Picture</label>
+                <div class="col-lg-9">
+                    <!-- Metronic Image Input Component -->
+                    <div class="image-input image-input-outline @(hasImage ? "image-input-changed" : "image-input-empty") shadow-sm" data-kt-image-input="true">
+
+                        <!-- Preview wrapper -->
+                        <div class="image-input-wrapper w-125px h-125px rounded-circle"
+                             id="image_preview_wrapper"
+                             style="background-image: url('@(hasImage ? Model.ImageThumnail : "/assets/images/Portrait_Placeholder.png")'); background-size: cover; background-position: center;">
+                        </div>
+
+                        <!-- Edit / Change Button -->
+                        <label class="btn btn-icon btn-circle btn-active-color-primary w-30px h-30px bg-body shadow"
+                               data-kt-image-input-action="change"
+                               data-bs-toggle="tooltip"
+                               title="Change image">
+                            <i class="bi bi-pencil-fill fs-7"></i>
+                            <input type="file" asp-for="Image" accept=".png, .jpg, .jpeg" id="patient_image_input" />
+                            <input type="hidden" name="avatar_remove" />
+                        </label>
+
+                        <!-- Cancel Button -->
+                        <span class="btn btn-icon btn-circle btn-active-color-primary w-30px h-30px bg-body shadow"
+                              data-kt-image-input-action="cancel"
+                              data-bs-toggle="tooltip"
+                              title="Cancel image"
+                              id="patient_image_cancel">
+                            <i class="bi bi-x fs-2"></i>
+                        </span>
+                    </div>
+                    <div class="form-text text-muted fs-7 mt-2">Allowed file types: png, jpg, jpeg. Recommended size: 300x300px.</div>
+                    <span asp-validation-for="Image" class="text-danger d-block mt-1"></span>
+                </div>
+            </div>
+
+            <div class="separator separator-dashed my-8"></div>
+
+            <!-- Section 2: Personal Information -->
+            <div class="mb-7">
+                <h5 class="text-dark fw-bold mb-5"><i class="bi bi-info-circle me-2 text-primary"></i>Personal Information</h5>
+
+                <!-- Full Name -->
+                <div class="row mb-6">
+                    <label class="col-lg-3 col-form-label fw-semibold fs-6 required">Full Name</label>
+                    <div class="col-lg-9 fv-row">
+                        <div class="input-group input-group-solid">
+                            <span class="input-group-text"><i class="bi bi-person fs-4 text-muted"></i></span>
+                            <input type="text" asp-for="FullName" class="form-control form-control-lg form-control-solid" placeholder="Enter patient's full name" />
+                        </div>
+                        <span asp-validation-for="FullName" class="text-danger mt-1 d-block"></span>
+                    </div>
+                </div>
+
+                <!-- Gender & Date of Birth -->
+                <div class="row mb-6">
+                    <label class="col-lg-3 col-form-label fw-semibold fs-6 required">Gender & DOB</label>
+                    <div class="col-lg-9">
+                        <div class="row">
+                            <div class="col-lg-6 fv-row mb-3 mb-lg-0">
+                                <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Clinck.Domain.Enums.Gender>()" class="form-select form-select-solid form-select-lg js-select2" data-control="select2" data-placeholder="Select Gender">
+                                    <option value=""></option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger mt-1 d-block"></span>
+                            </div>
+                            <div class="col-lg-6 fv-row">
+                                <div class="input-group input-group-solid">
+                                    <span class="input-group-text"><i class="bi bi-calendar-event fs-4 text-muted"></i></span>
+                                    <input type="text" asp-for="DateOfBirth" class="form-control form-control-lg form-control-solid flatpickr-input" placeholder="Select Date of Birth" id="kt_datepicker_1" />
+                                </div>
+                                <span asp-validation-for="DateOfBirth" class="text-danger mt-1 d-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator separator-dashed my-8"></div>
+
+            <!-- Section 3: Contact Details -->
+            <div class="mb-7">
+                <h5 class="text-dark fw-bold mb-5"><i class="bi bi-telephone me-2 text-primary"></i>Contact Details</h5>
+
+                <div class="row mb-6">
+                    <label class="col-lg-3 col-form-label fw-semibold fs-6">Contact Info</label>
+                    <div class="col-lg-9">
+                        <div class="row">
+                            <div class="col-lg-6 fv-row mb-3 mb-lg-0">
+                                <div class="input-group input-group-solid">
+                                    <span class="input-group-text"><i class="bi bi-phone fs-4 text-muted"></i></span>
+                                    <input type="text" asp-for="Phone" class="form-control form-control-lg form-control-solid" placeholder="Phone Number" />
+                                </div>
+                                <span asp-validation-for="Phone" class="text-danger mt-1 d-block"></span>
+                            </div>
+                            <div class="col-lg-6 fv-row">
+                                <div class="input-group input-group-solid">
+                                    <span class="input-group-text"><i class="bi bi-envelope fs-4 text-muted"></i></span>
+                                    <input type="email" asp-for="Email" class="form-control form-control-lg form-control-solid" placeholder="Email Address" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger mt-1 d-block"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="row mb-6">
+                    <label class="col-lg-3 col-form-label fw-semibold fs-6 required">Address</label>
+                    <div class="col-lg-9 fv-row">
+                        <textarea asp-for="Address" class="form-control form-control-solid" rows="2" placeholder="Enter residential address"></textarea>
+                        <span asp-validation-for="Address" class="text-danger mt-1 d-block"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator separator-dashed my-8"></div>
+
+            <!-- Section 4: Medical Background -->
+            <div class="mb-7">
+                <h5 class="text-dark fw-bold mb-5"><i class="bi bi-heart-pulse me-2 text-primary"></i>Medical Information</h5>
+
+                <div class="row mb-6">
+                    <label class="col-lg-3 col-form-label fw-semibold fs-6">Medical History</label>
+                    <div class="col-lg-9 fv-row">
+                        <textarea asp-for="MedicalHistory" class="form-control form-control-solid" rows="3" placeholder="Enter chronic diseases, allergies, or past surgeries (optional)"></textarea>
+                        <span asp-validation-for="MedicalHistory" class="text-danger mt-1 d-block"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="card-footer d-flex justify-content-end py-6 px-0 border-0 mt-5">
+                <a asp-action="Index" class="btn btn-light btn-active-light-primary me-3">Cancel</a>
+                <button type="submit" class="btn btn-primary px-6" id="kt_patient_submit">
+                    <span class="indicator-label">
+                        <i class="bi bi-check-lg fs-4 me-1"></i> Save Patient
+                    </span>
+                    <span class="indicator-progress">
+                        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+    <!--end::Card Body-->
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $("#kt_datepicker_1").flatpickr({
+                dateFormat: "Y-m-d",      //
+                altInput: true,          
+                altFormat: "d-m-Y",      
+                maxDate: "today",
+                minDate: "1900-01-01",
+                allowInput: true
+            });
+
+            // 2. Select2 setup for Gender
+            if ($('.js-select2').length > 0) {
+                $('.js-select2').select2({
+                    minimumResultsForSearch: Infinity
+                });
+            }
+
+            $('.js-select2').on('change', function () {
+                $(this).valid();
+            });
+
+            // 3. Image Live Preview Script
+            $('#patient_image_input').on('change', function (e) {
+                if (e.target.files && e.target.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        $('#image_preview_wrapper').css('background-image', 'url(' + event.target.result + ')');
+                        $('.image-input').removeClass('image-input-empty').addClass('image-input-changed');
+                    }
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            // Cancel button functionality to reset the preview back to placeholder
+            $('#patient_image_cancel').on('click', function () {
+                $('#patient_image_input').val(''); // Clear the file input
+                $('#image_preview_wrapper').css('background-image', "url('/assets/images/Portrait_Placeholder.png')");
+                $('.image-input').removeClass('image-input-changed').addClass('image-input-empty');
+            });
+
+            // 4. Safe Submit Handler
+            $('#PatientForm').on('submit', function (e) {
+                if (!$(this).valid()) {
+                    e.preventDefault();
+                    return false;
+                }
+
+                var submitBtn = $('#kt_patient_submit');
+                submitBtn.attr('data-kt-indicator', 'on');
+                submitBtn.prop('disabled', true);
+            });
+        });
+    </script>
+}

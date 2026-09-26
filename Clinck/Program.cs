@@ -7,6 +7,7 @@ using Clinck.Web.Services.Implementation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using UoN.ExpressiveAnnotations.NetCore.DependencyInjection;
 
 namespace Clinck
 {
@@ -22,20 +23,53 @@ namespace Clinck
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+
             builder.Services.AddAutoMapper(cfg => {
                 cfg.AddProfile<Clinck.Application.Common.Mapping.Doctors.MappingDoctors>();
-                
-            }, typeof(Program).Assembly); 
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+                cfg.AddProfile<Clinck.Application.Common.Mapping.Department.MappingDepartment>();
+                cfg.AddProfile<Clinck.Application.Common.Mapping.Patients.MappingPatients>();
+                cfg.AddProfile<Clinck.Application.Common.Mapping.Appointment.MappingAppointment>();
+                cfg.AddProfile<Clinck.Application.Common.Mapping.User>();
+            });
+
             builder.Services.AddScoped<IDocotorService, DocotorService>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
             builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-            builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IImageService, ImageService>();
+            builder.Services.AddExpressiveAnnotations();
+
+            // Identity Configuration with AppUser
+            builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Default Password settings.
+
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.Password.RequiredLength = 8;
+                options.User.AllowedUserNameCharacters =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+#";
+
+            });
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Default Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(8);
+                options.Lockout.MaxFailedAccessAttempts = 4;
+                options.Lockout.AllowedForNewUsers = true;
+            });
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddMemoryCache();
 
             var app = builder.Build();
 

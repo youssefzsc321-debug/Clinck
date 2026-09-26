@@ -24,18 +24,17 @@
         </span>
     </td>
 
-    <!-- Status Badge -->
     <td>
         @if (Model.IsDeleted)
         {
-            <span class="badge bg-light-danger text-danger fw-bold px-3 py-2">
-                <i class="fa-solid fa-circle-xmark me-1 text-danger js-status" ></i> Inactive
+            <span class="badge bg-light-danger text-danger fw-bold px-3 py-2 js-status-badge">
+                <i class="fa-solid fa-circle-xmark me-1 text-danger"></i> Inactive
             </span>
         }
         else
         {
-            <span class="badge bg-light-success text-success fw-bold px-3 py-2">
-                <i class="fa-solid fa-circle-check me-1 text-success js-status"></i> Active
+            <span class="badge bg-light-success text-success fw-bold px-3 py-2 js-status-badge">
+                <i class="fa-solid fa-circle-check me-1 text-success"></i> Active
             </span>
         }
     </td>
@@ -45,8 +44,7 @@
         @Model.CreatedOn.ToString("MMM dd, yyyy")
     </td>
 
-    <!-- Last Updated -->
-    <td class="text-muted fs-7" data-order="@(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("yyyyMMddHHmmss") : "0")">
+    <td class="text-muted fs-7 js-updated-on" data-order="@(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("yyyyMMddHHmmss") : "0")">
         @(Model.LastUpdatedOn.HasValue ? Model.LastUpdatedOn.Value.ToString("MMM dd, yyyy") : "-")
     </td>
 
